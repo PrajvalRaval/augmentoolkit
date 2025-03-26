@@ -1,0 +1,99 @@
+API:
+  LARGE_MODEL: deepseek-r1:latest
+  LARGE_API_KEY: key-here
+  LARGE_BASE_URL: http://localhost:11434/v1
+  LARGE_MODE: api
+  SMALL_MODEL: deepseek-r1:latest
+  SMALL_BASE_URL: http://localhost:11434/v1
+  SMALL_API_KEY: key-here
+  SMALL_MODE: api
+HUGGINGFACE:
+  HUB_PATH: yourusername/your-path-here
+  PRIVATE: False
+  PUSH_TO_HUB: False
+PATH:
+  DEFAULT_PROMPTS: ./prompts
+  INPUT: ./input
+  OUTPUT: ./output
+  PROMPTS: ./prompts
+PHASE:
+  PHASE_INDEX: 2
+  WORK_IN_PHASES: False
+SKIP:
+  ANSWER_RELEVANCY_CHECK: True
+  REPAIR_QA_TUPLES: True
+  FILTER_CHUNKS: True
+  QUESTION_CHECK: True
+  CONVERSATION_GENERATION: False
+SYSTEM:
+  CHUNK_SIZE: 1900
+  COMPLETION_MODE: False
+  CONCURRENCY_LIMIT: 1
+  CONVERSATION_INSTRUCTIONS: For this conversation, you are generating a chat between
+    a generalist, generic AI assistant, and a human.
+  DOUBLE_CHECK_COUNTER: 1
+  DO_NOT_USE_SYSTEM_PROMPTS: False
+  FINAL_ASSISTANT_PROMPTS_NO_RAG: [
+    "Summarize this 3GPP meeting contribution in three bullet points: (1) purpose of contribution, (2) key proposal or technical content, (3) requested decision or next step. Also extract document number, authoring organization, related specification (if mentioned), and meeting number.",
+    "Extract the following details from this 3GPP Change Request: CR number, specification number (TS or TR), clause(s) affected, CR title, reason for change, abstract or summary, revision number, CR status (approved/noted/rejected/withdrawn), and any related contributions.",
+    "Extract the document title, draft version number, related specification number, key technical areas covered in this draft, and any open items marked for discussion. Provide a concise 5-sentence summary of what this draft adds or changes.",
+    "List all agenda items with their short descriptions, session times (if available), and speakers or responsible parties (if mentioned). Also extract the meeting number, location, and date.",
+    "Extract a structured summary of the meeting minutes, including: (a) key agenda items discussed, (b) decisions made with related CR numbers (if mentioned), (c) actions assigned, and (d) follow-up items for the next meeting. ",
+    "Identify this liaison statement’s source organization, target organizations, subject/title, purpose summary in 3 sentences, and any requests or calls for action. If any related specifications or documents are referenced, list them.",
+    "Extract general metadata: document number, title, meeting number, meeting location, meeting date, author organization(s), document type (contribution, CR, liaison, agenda, draft, minutes), related specs (if mentioned), and file revision (if applicable).",
+    "List all document cross-references found in this document, including referenced CR numbers, related specifications, and liaison statements. Include for each: referenced document ID, title (if mentioned), and relationship type (support, dependency, response).",
+    "Extract all decisions or outcomes recorded in this document. For each decision, provide: decision type (accepted/rejected/noted), affected CR number or contribution number, and any rationale provided.",
+    "Extract the key technical proposal in detail. Structure the output into: problem statement, proposed solution, expected impact, and any requested next steps. If multiple proposals exist, list them all."
+  ] # a wide variety of system prompts helps the AI learn better. What, you expect your users to spell things right?
+  FINAL_ASSISTANT_PROMPTS_RAG: [
+    'You are a helpful AI assistant. The following text is a 3GPP meeting document. Extract the following metadata from the content: document number, title, meeting number, location, date, author or organization, document type (contribution, CR, draft, liaison, agenda, minutes), related specifications (if mentioned), and revision (if present). Some knowledge:
+
+    {data}',
+    '{data}
+
+    You are a helpful AI assistant. The text above is a meeting contribution from a 3GPP working group. Summarize its purpose, key proposal, and requested decisions in three bullet points. Also identify the document number, authoring organization, related specification (if any), and meeting number',
+    'You are a helpful AI assistant. The following text is a 3GPP Change Request document. Extract the CR number, specification number, affected clause(s), CR title, reason for change, summary or abstract, revision number, CR status, and any references to related documents or contributions
+
+    {data}
+
+    Answer questions according to your knowledge.',
+    'You are a helpful AI assistant. The text provided is meeting minutes from a 3GPP working group meeting. Extract the agenda items discussed, key decisions made, accepted or rejected CRs (with numbers if mentioned), action points, and follow-ups.
+    {data}
+
+    Answer according to your knowledge',
+    'You are a helpful AI assistant. The following is a liaison statement from a 3GPP group.
+
+    {data}
+
+    Extract the source organization, target organization(s), subject, short summary, any requests made, and references to related specifications or documents ',
+    'You are a helpful AI assistant. The document below may contain references to other documents (CRs, contributions, liaisons). List all referenced documents with their document numbers, titles (if available), and the type of relationship (dependency, response, support, etc.).
+
+    {data}
+
+    Answer according to your knowledge',
+    'You are a helpful AI assistant. The following text is a draft version of a 3GPP technical specification or report.
+
+    {data}
+
+    Extract the draft title, version number, related specification number, key technical areas covered, and a short summary (max 5 sentences) of changes introduced. Answer according to your knowledge ',
+    'You are a helpful AI assistant. The text below contains decisions from a 3GPP meeting.
+
+    {data}
+
+    Extract all decisions, including the decision type (accepted/rejected/noted), affected CR or document number, and rationale (if provided). Answer according to your knowledge',
+    'You are a helpful AI assistant. The following text contains one or more technical proposals.
+
+    {data}
+
+    For each proposal, extract the problem statement, proposed solution, expected impact, and requested actions or next steps. Answer according to your knowledge'
+  ]
+  STOP: True
+  SUBSET_SIZE: 20
+  USE_FILENAMES: False
+  USE_SUBSET: False
+  RAG_FAILURE_PERCENTAGE: 0.1 # How much of the RAG data has the wrong chunk retrieved deliberately? To train it to answer correctly even if wrong facts are shown to it. We will need another dataset thing for making data where the question asks something that is not present and the rag retrieves something irrelevant obbviously and it is supposed to say "I don't know" or something.
+SCRAPING:
+  USE_GUTENBERG: False
+  START_URL: "https://www.gutenberg.org/ebooks/bookshelf/57"
+  MAX_BOOKS: 5
+  MAX_FAILURES: 5
