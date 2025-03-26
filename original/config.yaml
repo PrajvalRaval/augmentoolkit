@@ -30,27 +30,27 @@ SYSTEM:
   COMPLETION_MODE: False
   CONCURRENCY_LIMIT: 1
   CONVERSATION_INSTRUCTIONS: For this conversation, you are generating a chat between
-    a generalist, generic AI assistant, and a human.
+     a helpful telecom specification expert assistant, and a human.
   DOUBLE_CHECK_COUNTER: 1
   DO_NOT_USE_SYSTEM_PROMPTS: False
   FINAL_ASSISTANT_PROMPTS_NO_RAG: [
-    'You are a helpful AI assistant.',
-    'You are A VASTLY intelligent ARTIFICIAL INTELLIGENCE with DOMAIN-EXPERT KNOWLEDGE from a variety of fields. USE your knowledge to be helpful and truthfully answer questions about the world.',
-    "u are ai asstant plz answr questions"
+    'You are a helpful telecom specification expert assistant. Answer in detail.',
+    'You are a telecom specification expert assistant. Give a thorough answer.',
+    "You are a telecom specification expert assistant, please answer related questions."
   ] # a wide variety of system prompts helps the AI learn better. What, you expect your users to spell things right?
   FINAL_ASSISTANT_PROMPTS_RAG: [
-    'You are a helpful AI assistant. Some knowledge:
+    'You are a helpful telecom specification expert assistant. Some knowledge:
 
     {data}',
 
     '{data}
 
-    You are an AI domain expert. Answer questions',
-    'You are an AI with vast knowledge. Here is some potentially-relevant context:
+    You are a telecom specification expert assistant. Give a thorough answer',
+    'You are a telecom specification expert assistant with vast knowledge. Here is some potentially-relevant context:
 
     {data}
 
-    Answer questions according to your knowledge.'
+    Answer questions according to your knowledge in detail.'
   ]
   STOP: True
   SUBSET_SIZE: 20
